@@ -1,0 +1,71 @@
+@*
+ * This template takes a single argument, a String containing a
+ * message to display.
+ *@
+@(nodes: List[models.Node])
+
+@*
+ * Call the `main` template with two arguments. The first
+ * argument is a `String` with the title of the page, the second
+ * argument is an `Html` object containing the body of the page.
+ *@
+@main("view") {
+
+    <html>
+        <head>
+            <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("stylesheets/jqtree.css")">
+        </head>
+        <body>
+            <ul>
+                @for(firstNode <- nodes){
+
+                    <li onclick="myFunction(@firstNode.id)">@firstNode.id - @firstNode.name</li>
+                    <ul id="@firstNode.id">
+                        @if(firstNode.nodes.size() != 0) {
+                            @for(secondNode <- firstNode.nodes){
+                                <li id="@firstNode.id" onclick="myFunction(@secondNode.id)">@secondNode.id - @secondNode.name</li>
+                                @if(secondNode.nodes.size() != 0){
+                                    <ul id="@secondNode.id">
+                                        @for(thirdNode <- secondNode.nodes){
+                                            <li>@thirdNode.id - @thirdNode.name</li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        }
+                    </ul>
+                }
+            </ul>
+            <script>
+                    function myFunction(id) {
+                        var x = document.getElementById(id);
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                            var children = x.childNodes;
+
+                            // Loop through the children
+                            for(var c=0; c < children.length; c++) {
+                                if(children[c].style) {
+                                    children[c].style.display = 'block';
+                                }
+                            }
+                        } else {
+                            x.style.display = "none";
+                            var children = x.childNodes;
+
+                            // Loop through the children
+                            for(var c=0; c < children.length; c++) {
+                                if(children[c].style) {
+                                    children[c].style.display = 'none';
+                                }
+                            }
+                        }
+                    }
+            </script>
+            <script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+            <script src="@routes.Assets.versioned("javascripts/tree.jquery.js")"></script>
+        </body>
+    </html>
+
+
+}
