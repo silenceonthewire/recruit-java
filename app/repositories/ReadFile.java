@@ -1,4 +1,4 @@
-package reposiotories;
+package repositories;
 
 import models.ExcelData;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

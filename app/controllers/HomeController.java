@@ -10,6 +10,7 @@ import models.Node;
 import parsers.NodeToNode;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
+import play.libs.ws.WSResponse;
 import play.mvc.*;
 
 import protocols.NodeAction;
@@ -56,16 +57,21 @@ public class HomeController extends Controller {
         return myClient.currentRequest().thenApplyAsync(response -> {
 
             try {
-                String body = response.getBody();
-                ObjectMapper mapper = new ObjectMapper();
 
-                List<Node> nodes = mapper.readValue(body, new TypeReference<List<Node>>(){});
-                return ok(views.html.index.render(nodes));
+                return getMappedResult(response);
             } catch (IOException e) {
                 e.printStackTrace();
                 return badRequest();
             }
         }, executionContext.current());
+    }
+
+    private Result getMappedResult(WSResponse response) throws IOException {
+        String body = response.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<Node> nodes = mapper.readValue(body, new TypeReference<List<Node>>(){});
+        return ok(views.html.index.render(nodes));
     }
 
 }

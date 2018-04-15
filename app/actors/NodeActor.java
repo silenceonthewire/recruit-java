@@ -3,7 +3,7 @@ package actors;
 import akka.actor.AbstractActor;
 import models.Node;
 import protocols.NodeProtocol;
-import reposiotories.NodeRepository;
+import repositories.NodeRepository;
 
 import java.util.List;
 
